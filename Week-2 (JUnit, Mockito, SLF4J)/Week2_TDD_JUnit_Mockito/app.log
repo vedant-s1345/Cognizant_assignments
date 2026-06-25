@@ -1,0 +1,15 @@
+16:57:01.871 [main] DEBUG com.tdd.logging.LoggingExample - This is a DEBUG message — debugging info
+16:57:01.873 [main] INFO  com.tdd.logging.LoggingExample - This is an INFO message — general info
+16:57:01.874 [main] WARN  com.tdd.logging.LoggingExample - This is a WARN message — potential issue
+16:57:01.874 [main] ERROR com.tdd.logging.LoggingExample - This is an ERROR message — something went wrong
+16:57:01.874 [main] INFO  com.tdd.logging.LoggingExample - User logged in: VedantSarode with ID: 42
+16:57:01.875 [main] WARN  com.tdd.logging.LoggingExample - User VedantSarode has exceeded login attempts
+16:57:01.876 [main] ERROR com.tdd.logging.LoggingExample - Failed to load user with ID: 42
+16:57:01.876 [main] ERROR com.tdd.logging.LoggingExample - Arithmetic error occurred: / by zero
+java.lang.ArithmeticException: / by zero
+	at com.tdd.logging.LoggingExample.main(LoggingExample.java:34)
+16:57:01.879 [main] ERROR com.tdd.logging.LoggingExample - Null pointer error: Cannot invoke "String.length()" because "str" is null
+java.lang.NullPointerException: Cannot invoke "String.length()" because "str" is null
+	at com.tdd.logging.LoggingExample.main(LoggingExample.java:41)
+16:57:01.879 [main] DEBUG com.tdd.logging.LoggingExample - Debug is enabled — logging detailed info
+16:57:01.879 [main] INFO  com.tdd.logging.LoggingExample - Application running successfully
