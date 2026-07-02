@@ -31,7 +31,7 @@ class SpringLearnApplicationTests {
 
     @Test
     void testGetCountry() throws Exception {
-        ResultActions actions = mvc.perform(get("/country"));
+        ResultActions actions = mvc.perform(get("/countries/in"));
         actions.andExpect(status().isOk());
         actions.andExpect(jsonPath("$.code").exists());
         actions.andExpect(jsonPath("$.code").value("IN"));

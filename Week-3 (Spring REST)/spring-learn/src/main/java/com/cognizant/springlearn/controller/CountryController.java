@@ -1,52 +1,60 @@
 package com.cognizant.springlearn.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cognizant.springlearn.Country;
 import com.cognizant.springlearn.service.CountryService;
 
+import jakarta.validation.Valid;
+
 @RestController
+@RequestMapping("/countries")
 public class CountryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CountryController.class);
 
     private final CountryService countryService;
-    
+
     public CountryController(CountryService countryService) {
-        LOGGER.debug("Inside CountryController Constructor.");
         this.countryService = countryService;
     }
 
-    @GetMapping("/country")
-    public Country getCountryIndia() {
-        LOGGER.info("START - getCountryIndia()");
-        ApplicationContext context = new ClassPathXmlApplicationContext("country.xml");
-        Country country = context.getBean("country", Country.class);
-        LOGGER.info("END - getCountryIndia()");
-        return country;
-    }
-    
-    @GetMapping("/countries")
-    @SuppressWarnings("unchecked")
-    public java.util.List<Country> getAllCountries() {
+    @GetMapping
+    public List<Country> getAllCountries() {
         LOGGER.info("START - getAllCountries()");
-        ApplicationContext context = new ClassPathXmlApplicationContext("country.xml");
-        java.util.List<Country> countryList = (java.util.List<Country>) context.getBean("countryList");
-        LOGGER.info("END - getAllCountries()");
-        return countryList;
+        return countryService.getAllCountries();
     }
-    
-    @GetMapping("/countries/{code}")
-    public Country getCountry(@org.springframework.web.bind.annotation.PathVariable String code) 
-            throws com.cognizant.springlearn.service.exception.CountryNotFoundException {
+
+    @GetMapping("/{code}")
+    public Country getCountry(@PathVariable String code) {
         LOGGER.info("START - getCountry() : code = {}", code);
-        Country country = countryService.getCountry(code);
-        LOGGER.info("END - getCountry()");
-        return country;
+        return countryService.getCountry(code);
+    }
+
+    @PostMapping
+    public Country addCountry(@RequestBody @Valid Country country) {
+        LOGGER.info("Start - addCountry() : {}", country);
+        Country saved = countryService.addCountry(country);
+        LOGGER.info("End - addCountry()");
+        return saved;
+    }
+
+    @PutMapping
+    public Country updateCountry(@RequestBody @Valid Country country) {
+        LOGGER.info("Start - updateCountry() : {}", country);
+        Country updated = countryService.updateCountry(country);
+        LOGGER.info("End - updateCountry()");
+        return updated;
+    }
+
+    @DeleteMapping("/{code}")
+    public void deleteCountry(@PathVariable String code) {
+        LOGGER.info("Start - deleteCountry() : {}", code);
+        countryService.deleteCountry(code);
+        LOGGER.info("End - deleteCountry()");
     }
 }

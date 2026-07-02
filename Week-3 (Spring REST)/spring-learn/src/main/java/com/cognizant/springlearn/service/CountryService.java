@@ -1,5 +1,6 @@
 package com.cognizant.springlearn.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,18 +17,39 @@ public class CountryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CountryService.class);
 
-    @SuppressWarnings("unchecked")
-    public Country getCountry(String code) {
-        LOGGER.info("START - getCountry()");
-        ApplicationContext context = new ClassPathXmlApplicationContext("country.xml");
-        List<Country> countryList = (List<Country>) context.getBean("countryList");
+    private final List<Country> countryList;
 
-        Country match = countryList.stream()
+    @SuppressWarnings("unchecked")
+    public CountryService() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("country.xml");
+        List<Country> xmlList = (List<Country>) context.getBean("countryList");
+        this.countryList = new ArrayList<>(xmlList);
+    }
+
+    public List<Country> getAllCountries() {
+        return countryList;
+    }
+
+    public Country getCountry(String code) {
+        return countryList.stream()
                 .filter(c -> c.getCode().equalsIgnoreCase(code))
                 .findFirst()
                 .orElseThrow(CountryNotFoundException::new);
+    }
 
-        LOGGER.info("END - getCountry()");
-        return match;
+    public Country addCountry(Country country) {
+        countryList.add(country);
+        return country;
+    }
+
+    public Country updateCountry(Country country) {
+        Country existing = getCountry(country.getCode());
+        existing.setName(country.getName());
+        return existing;
+    }
+
+    public void deleteCountry(String code) {
+        Country existing = getCountry(code);
+        countryList.remove(existing);
     }
 }
